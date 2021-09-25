@@ -1,1 +1,0 @@
-requirements: pygame, python 3
