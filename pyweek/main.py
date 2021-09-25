@@ -18,7 +18,7 @@ game_over = False
 
 score = 0
 
-truckrect = pygame.Rect(268, 15, 150, 200)
+truckrect = pygame.Rect(268, 5, 150, 200)
 truckcollrect = pygame.Rect(truckrect.x, truckrect.y, truckrect.width, 160)
 truckimage = pygame.image.load("sprites/Truck.png")
 truckspeed = 16
@@ -27,7 +27,9 @@ truckR = pygame.image.load("sprites/TruckTL.png")
 truckL = pygame.image.load("sprites/TruckTR.png")
 
 trailerrect = pygame.Rect(random.randrange(46, 300), 360, 150, 200)
-trailerimage = pygame.image.load("sprites/Trailer.png")
+trailerlvl = random.randrange(1, 4, 1)
+trailerimgs = [pygame.image.load("sprites/Trailer1.png"), pygame.image.load("sprites/Trailer2.png"), pygame.image.load("sprites/Trailer3.png")]
+trailerimg = trailerimgs[trailerlvl-1]
 
 bgSY1 = -360
 bgSY2 = 0
@@ -76,7 +78,9 @@ while 1:
         if trailerrect.x <= truckrect.x + 15 and trailerrect.x >= truckrect.x - 15 and trailerrect.y < truckrect.bottom - 10:
             trailerrect.y = 360
             trailerrect.x = random.randrange(30, 300)
-            score += 1
+            score += 2 * trailerlvl
+            trailerlvl = random.randrange(1, 4, 1)
+            trailerimg = trailerimgs[trailerlvl - 1]
         if trailerrect.bottom == 0 or truckcollrect.colliderect(trailerrect):
             game_running = False
             game_over = True
@@ -91,7 +95,7 @@ while 1:
     if not game_running and not game_over:
         start_button.draw(screen)
     elif game_running and not game_over:
-        screen.blit(pygame.transform.scale(trailerimage, trailerrect.size), trailerrect.topleft)
+        screen.blit(pygame.transform.scale(trailerimg, trailerrect.size), trailerrect.topleft)
         screen.blit(score_surface, (4, 4))
     if game_over:
         screen.blit(game_over_surf, (240 - (game_over_surf.get_width()//2), 140 - (game_over_surf.get_height()//2)))
