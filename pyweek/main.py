@@ -1,15 +1,16 @@
 import pygame, sys, random, os
-
-from pygame.key import get_mods
+from pygame import mixer
 from buttons import *
 
 pygame.init()
 size = width, height = 480, 360
 screen = pygame.display.set_mode(size)
+mixer.init()
 
 pygame.display.set_caption('Truck n Trailer')
 
 font = pygame.font.Font(None, 48)
+mixer.music.load("sfx/Song For Truck n Trailer.mp3")
 
 start_button = BorderedImageButton(215, 155, 50, 50, pygame.image.load("sprites/StartButton.png"), 2, (30, 30, 30))
 play_again_button = BorderedImageButton(215, 170, 50, 50, pygame.image.load("sprites/PlayAgainButton.png"), 2, (30, 30, 30))
@@ -84,6 +85,9 @@ while 1:
         if trailerrect.bottom == 0 or truckcollrect.colliderect(trailerrect):
             game_running = False
             game_over = True
+        
+        if not pygame.mixer.music.get_busy():
+            mixer.music.play()
 
     score_surface = font.render(str(score), True, (0, 0, 0))
     game_over_surf = font.render("Game Over", True, (187, 187, 187))
